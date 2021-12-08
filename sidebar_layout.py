@@ -1,12 +1,11 @@
-import dash
 import dash_bootstrap_components as dbc
 from dash import dcc
 from dash import html
-from dash.dependencies import Input, Output, State
-import plotly.graph_objs as go
-import numpy as np
 import pandas as pd
 from app import app
+
+df = pd.read_csv("heart_failure_clinical_records_dataset.csv")
+df.columns = map(lambda x: x.replace("_", " ").title(), df.columns)
 
 # ==============================================================
 # Session Variables
@@ -29,10 +28,20 @@ logo = html.Div(
 
 input_1 = html.Div(
     [
-        dbc.Label("Input", html_for="example"),
-        dbc.Input(type="email", id="example", placeholder="Enter email"),
+        dbc.Label("Numerical"),
+        dbc.InputGroup(
+            [
+                dbc.Select(
+                    options=list(
+                        {"label": option, "value": option} for option in df.columns
+                    ),
+                    value="A",
+                    id="input-1",
+                ),
+            ]
+        ),
         dbc.FormText(
-            "Are you on email? You simply have to be these days", color="secondary",
+            "Pick an attribute that you want to explore further", color="secondary",
         ),
     ],
     className="mb-3",
@@ -44,12 +53,12 @@ input_1 = html.Div(
 
 input_2 = html.Div(
     [
-        dbc.Label("Dropdown"),
+        dbc.Label("Categorical"),
         dbc.InputGroup(
             [
                 dbc.Select(
                     options=list(
-                        {"label": option, "value": option} for option in ["A", "B", "C"]
+                        {"label": option, "value": option} for option in df.columns
                     ),
                     value="A",
                     id="input-2",
@@ -57,7 +66,8 @@ input_2 = html.Div(
             ]
         ),
         dbc.FormText(
-            "Are you on email? You simply have to be these days", color="secondary",
+            "Navigate to the categorical tab to further explore this variable",
+            color="secondary",
         ),
     ],
     className="mb-3",
@@ -69,18 +79,16 @@ input_2 = html.Div(
 
 input_3 = html.Div(
     [
-        dbc.Label("Slider", html_for="example-email"),
+        dbc.Label("Time", html_for="example-email"),
         dcc.Slider(
-            min=0,
-            max=100,
-            marks={i: str(i) + "%" for i in range(0, 101, 20)},
-            value=80,
+            min=4,
+            max=285,
+            marks={i: str(i) for i in range(4, 286, 49)},
+            value=285,
             tooltip={"always_visible": False, "placement": "bottom"},
             id="input-3",
         ),
-        dbc.FormText(
-            "Are you on email? You simply have to be these days", color="secondary",
-        ),
+        dbc.FormText("Some sub-text about the input", color="secondary",),
     ],
     className="mb-3",
 )
@@ -98,11 +106,7 @@ radioitems = dbc.Row(
                 options=[
                     {"label": "First radio", "value": 1},
                     {"label": "Second radio", "value": 2},
-                    {
-                        "label": "Third disabled radio",
-                        "value": 3,
-                        "disabled": True,
-                    },
+                    {"label": "Third disabled radio", "value": 3, "disabled": True,},
                 ],
             ),
             width=10,
@@ -158,36 +162,20 @@ inputs = html.Div(
 )
 
 # ==============================================================
-# Submit Button
-# ==============================================================
-
-submit_btn = html.Div(
-    dbc.Button("Submit", n_clicks=0, color="success", id="submit-btn"),
-    className="d-grid gap-2 viewport-bottom",
-)
-
-# ==============================================================
-# Reset Button
-# ==============================================================
-
-reset_btn = html.Div(
-    dbc.Button("Reset to Defaults", color="outline-danger", id="reset-btn"),
-    className="d-grid gap-2 viewport-bottom",
-)
-
-# ==============================================================
 # Sidebar Filters
 # ==============================================================
 
-dashboard_filter_form = dbc.Form(
-    [input_1, input_2, input_3, inputs, html.Br(), submit_btn, html.Br(), reset_btn]
-)
+dashboard_filter_form = dbc.Form([input_1, input_2, input_3, inputs])
 
 # ==============================================================
 # Sidebar Layout
 # ==============================================================
 
 sidebar_layout = html.Div(
-    [logo, html.H3("Heart Failure Monitoring", className="d-flex justify-content-center"), dashboard_filter_form,],
+    [
+        logo,
+        html.H3("Heart Failure Monitoring", className="d-flex justify-content-center"),
+        dashboard_filter_form,
+    ],
     id="sidebar",
 )

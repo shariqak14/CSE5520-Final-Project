@@ -7,8 +7,6 @@ from sidebar_layout import sidebar_layout, demo_var
 
 from page_content_layout import page_content_layout
 
-import sidebar_callbacks
-import page_content_callbacks
 
 
 app.layout = html.Div(
