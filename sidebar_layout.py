@@ -11,7 +11,7 @@ df.columns = map(lambda x: x.replace("_", " ").title(), df.columns)
 # Session Variables
 # ==============================================================
 
-demo_var = dcc.Store(id="demo-var", data=[1, 2, 3])
+numerical_var = dcc.Store(id="numerical-var", data="Age")
 
 # ==============================================================
 # Logo
@@ -33,15 +33,25 @@ input_1 = html.Div(
             [
                 dbc.Select(
                     options=list(
-                        {"label": option, "value": option} for option in df.columns
+                        {"label": option, "value": option}
+                        for option in [
+                            "Age",
+                            "Creatinine Phosphokinase",
+                            "Ejection Fraction",
+                            "Platelets",
+                            "Serum Creatinine",
+                            "Serum Sodium",
+                            "Time",
+                        ]
                     ),
-                    value="A",
+                    value="Age",
                     id="input-1",
                 ),
             ]
         ),
         dbc.FormText(
-            "Pick an attribute that you want to explore further", color="secondary",
+            "Pick a numerical attribute that you want to explore further and navigate to the numerical tab.",
+            color="secondary",
         ),
     ],
     className="mb-3",
@@ -58,15 +68,22 @@ input_2 = html.Div(
             [
                 dbc.Select(
                     options=list(
-                        {"label": option, "value": option} for option in df.columns
+                        {"label": option, "value": option}
+                        for option in [
+                            "Anaemia",
+                            "Diabetes",
+                            "High Blood Pressure",
+                            "Sex",
+                            "Smoking",
+                        ]
                     ),
-                    value="A",
+                    value="Anaemia",
                     id="input-2",
                 ),
             ]
         ),
         dbc.FormText(
-            "Navigate to the categorical tab to further explore this variable",
+            "Pick a categorical attribute that you want to explore further and navigate to the categorical tab.",
             color="secondary",
         ),
     ],
@@ -79,93 +96,29 @@ input_2 = html.Div(
 
 input_3 = html.Div(
     [
-        dbc.Label("Time", html_for="example-email"),
+        dbc.Label("Max Age"),
         dcc.Slider(
-            min=4,
-            max=285,
-            marks={i: str(i) for i in range(4, 286, 49)},
-            value=285,
+            min=40,
+            max=95,
+            marks={i: str(i) for i in range(40, 96, 5)},
+            value=95,
             tooltip={"always_visible": False, "placement": "bottom"},
             id="input-3",
         ),
-        dbc.FormText("Some sub-text about the input", color="secondary",),
+        html.Br(),
+        html.Br(),
+        dbc.FormText("The video presentation is available here:", color="secondary",),
+        html.Br(),
+        html.A("https://www.youtube.com/", href="https://www.youtube.com/"),
     ],
     className="mb-3",
-)
-
-# ==============================================================
-# Input 4
-# ==============================================================
-
-radioitems = dbc.Row(
-    [
-        dbc.Label("Radios", html_for="example-radios-row", width=2),
-        dbc.Col(
-            dbc.RadioItems(
-                id="example-radios-row",
-                options=[
-                    {"label": "First radio", "value": 1},
-                    {"label": "Second radio", "value": 2},
-                    {"label": "Third disabled radio", "value": 3, "disabled": True,},
-                ],
-            ),
-            width=10,
-        ),
-    ],
-    className="mb-3",
-)
-
-checklist = dbc.Row(
-    [
-        dbc.Label("Options", html_for="example-radios-row", width=2),
-        dbc.Col(
-            dbc.Checklist(
-                options=[
-                    {"label": "Option 1", "value": 1},
-                    {"label": "Option 2", "value": 2},
-                    {"label": "Disabled Option", "value": 3, "disabled": True},
-                ],
-                value=[1],
-                id="checklist-input",
-            ),
-            width=10,
-        ),
-    ],
-    className="mb-3",
-)
-
-switches = dbc.Row(
-    [
-        dbc.Label("Switch", html_for="example-radios-row", width=2),
-        dbc.Col(
-            dbc.Checklist(
-                options=[
-                    {"label": "Option 1", "value": 1},
-                    {"label": "Option 2", "value": 2},
-                    {"label": "Disabled Option", "value": 3, "disabled": True},
-                ],
-                value=[1],
-                id="switches-input",
-                switch=True,
-            ),
-            width=10,
-        ),
-    ],
-    className="mb-3",
-)
-
-inputs = html.Div(
-    [
-        dbc.Form([radioitems, checklist, switches]),
-        html.P(id="radioitems-checklist-output"),
-    ]
 )
 
 # ==============================================================
 # Sidebar Filters
 # ==============================================================
 
-dashboard_filter_form = dbc.Form([input_1, input_2, input_3, inputs])
+dashboard_filter_form = dbc.Form([input_1, input_2, input_3])
 
 # ==============================================================
 # Sidebar Layout

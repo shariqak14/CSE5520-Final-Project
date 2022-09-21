@@ -3,11 +3,12 @@ from dash import html
 
 from app import app
 
-from sidebar_layout import sidebar_layout, demo_var
+from sidebar_layout import sidebar_layout, numerical_var
 
 from page_content_layout import page_content_layout
 
-
+import sidebar_callbacks
+import page_content_callbacks
 
 app.layout = html.Div(
     [
@@ -15,9 +16,9 @@ app.layout = html.Div(
         sidebar_layout,
         page_content_layout,
         # import session variables (if any)
-        demo_var,
+        numerical_var,
     ]
 )
 
 if __name__ == "__main__":
-    app.run_server(host="localhost", port=8080, debug=True)
+    app.run_server(host="localhost", port=8083, debug=True)

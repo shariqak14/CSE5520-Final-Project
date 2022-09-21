@@ -35,7 +35,7 @@ charts_1 = dbc.Row(
             dcc.Graph(
                 id="2d-scatter-pca",
                 figure=px.scatter(
-                    X_2, x=0, y=1, color="Death Event", title="2D scatter for PCA"
+                    X_2, x=0, y=1, color="Death Event", title="2D Scatter for PCA"
                 ),
                 className="rounded-lg",
             )
@@ -49,7 +49,7 @@ charts_1 = dbc.Row(
                     y=1,
                     color=df["Death Event"],
                     labels={"color": "Death Event"},
-                    title="2D scatter for t-SNE",
+                    title="2D Scatter for t-SNE",
                 ),
                 className="rounded-lg",
             )
@@ -85,7 +85,7 @@ charts_2 = dbc.Row(
                     z=2,
                     color=df["Death Event"],
                     labels={"color": "Death Event"},
-                    title="3D scatter for t-SNE",
+                    title="3D Scatter for t-SNE",
                 ),
                 className="rounded-lg",
             )
